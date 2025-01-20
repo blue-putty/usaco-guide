@@ -97,7 +97,8 @@
       "isStarred": true,
       "tags": ["Prefix Sums"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -122,6 +123,31 @@
       "tags": ["Prefix Sums"],
       "solutionMetadata": {
         "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-1826D",
+      "name": "Running Miles",
+      "url": "https://codeforces.com/contest/1826/problem/D",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": true,
+      "tags": ["Prefix Sums"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-1291D",
+      "name": "Irreducible Anagrams",
+      "url": "https://codeforces.com/contest/1291/problem/D",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Prefix Sums"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
       }
     },
     {

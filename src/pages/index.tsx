@@ -1,3 +1,4 @@
+import { useLocation } from '@gatsbyjs/reach-router';
 import {
   AcademicCapIcon,
   ChartBarIcon,
@@ -10,30 +11,28 @@ import {
   UserGroupIcon,
 } from '@heroicons/react/outline';
 import classNames from 'classnames';
-import { Link } from 'gatsby';
-import { OutboundLink } from 'gatsby-plugin-google-analytics';
+import { Link, navigate } from 'gatsby';
 import { StaticImage } from 'gatsby-plugin-image';
 import * as React from 'react';
-import { useRef } from 'react';
+import { CPIProjectCard } from '../components/Index/CPIProjectCard';
+import ContributorsSection from '../components/Index/ContributorsSection';
+import { Feature } from '../components/Index/Feature';
+import TrustedBy from '../components/Index/TrustedBy';
+import { ProblemsetsFeature } from '../components/Index/features/ProblemsetsFeature';
+import { ProgressTrackingFeature } from '../components/Index/features/ProgressTrackingFeature';
+import { ResourcesFeature } from '../components/Index/features/ResourcesFeature';
+import { EasyFunCoding, Vercel } from '../components/Index/sponsor-logos';
+import TopNavigationBar from '../components/TopNavigationBar/TopNavigationBar';
 import { GlowingRing } from '../components/elements/landing/GlowingRing';
 import { GlowingText } from '../components/elements/landing/GlowingText';
 import { GradientText } from '../components/elements/landing/GradientText';
 import { HighlightedText } from '../components/elements/landing/HighlightedText';
-import ContributorsSection from '../components/Index/ContributorsSection';
-import { CPIProjectCard } from '../components/Index/CPIProjectCard';
-import { Feature } from '../components/Index/Feature';
-import { ProblemsetsFeature } from '../components/Index/features/ProblemsetsFeature';
-import { ProgressTrackingFeature } from '../components/Index/features/ProgressTrackingFeature';
-import { ResourcesFeature } from '../components/Index/features/ResourcesFeature';
-import {
-  EasyFunCoding,
-  Vercel,
-  XCamp,
-} from '../components/Index/sponsor-logos';
-import TrustedBy from '../components/Index/TrustedBy';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
-import TopNavigationBar from '../components/TopNavigationBar/TopNavigationBar';
+import {
+  useFirebaseUser,
+  useIsUserDataLoaded,
+} from '../context/UserDataContext/UserDataContext';
 
 const containerClasses = 'max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8';
 const headerClasses =
@@ -52,7 +51,23 @@ const linkTextStyles =
   'text-blue-600 dark:text-blue-300 transition hover:text-purple-600 dark:hover:text-purple-300';
 
 export default function IndexPage(): JSX.Element {
-  const learnMoreRef = useRef<HTMLDivElement>();
+  const firebaseUser = useFirebaseUser();
+  const loading = useIsUserDataLoaded();
+  const location = useLocation();
+  React.useEffect(() => {
+    // User will normally be redirected to the dashboard if the user is logged in, but if user clicks the icon in the top left corner while on the dashboard, they will not be redirected.
+    try {
+      if (firebaseUser && location.state.redirect) {
+        /* Whether or not the user should be redirected to the dashboard is stored in location.state.redirect, but if the user opens a link straight
+        to the landing page, location.state.redirect will be undefined, causing a typeerror, this try catch statements accounts for that */
+        navigate('/dashboard');
+      }
+    } catch (e) {
+      if (firebaseUser) {
+        navigate('/dashboard');
+      }
+    }
+  }, [firebaseUser, loading, location]);
 
   return (
     <Layout>
@@ -531,7 +546,7 @@ export default function IndexPage(): JSX.Element {
             Our Sponsors
           </p>
           {/* Sponsor logos don't fit well in the light theme */}
-          <p className="uppercase text-gray-600 dark:text-gray-400 font-semibold pt-6 md:text-lg">
+          {/*<p className="uppercase text-gray-600 dark:text-gray-400 font-semibold pt-6 md:text-lg">
             Platinum Sponsors
           </p>
           <div className="my-8 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:grid-cols-4 lg:my-6 text-gray-600 dark:text-gray-400 items-center">
@@ -540,7 +555,7 @@ export default function IndexPage(): JSX.Element {
                 <XCamp />
               </a>
             </div>
-          </div>
+          </div> */}
           <p className="uppercase text-gray-600 dark:text-gray-400 font-semibold pt-6 md:text-lg">
             Bronze Sponsors
           </p>
@@ -590,13 +605,14 @@ export default function IndexPage(): JSX.Element {
                   <dd className="mt-2">
                     <p className="text-base leading-6 text-gray-500 dark:text-gray-400">
                       USACO stands for the{' '}
-                      <OutboundLink
+                      <a
                         href="http://www.usaco.org/"
                         target="_blank"
+                        rel="noreferrer"
                         className="text-blue-600 dark:text-blue-400 underline"
                       >
                         USA Computing Olympiad
-                      </OutboundLink>
+                      </a>
                       . Check out the{' '}
                       <Link
                         to="/general/usaco-faq"
@@ -647,13 +663,14 @@ export default function IndexPage(): JSX.Element {
                   <dd className="mt-2">
                     <p className="text-base leading-6 text-gray-500 dark:text-gray-400">
                       Check out the{' '}
-                      <OutboundLink
+                      <a
                         href="https://joincpi.org/?ref=home"
                         target="_blank"
+                        rel="noreferrer"
                         className="text-blue-600 dark:text-blue-400 underline"
                       >
                         Competitive Programming Initiative
-                      </OutboundLink>
+                      </a>
                       !
                     </p>
                   </dd>
@@ -679,13 +696,14 @@ export default function IndexPage(): JSX.Element {
                   <dd className="mt-2">
                     <p className="text-base leading-6 text-gray-500 dark:text-gray-400">
                       If you get stuck, head over to the{' '}
-                      <OutboundLink
+                      <a
                         href="https://forum.usaco.guide"
                         target="_blank"
+                        rel="noreferrer"
                         className="text-blue-600 dark:text-blue-400 underline"
                       >
                         USACO Forum
-                      </OutboundLink>{' '}
+                      </a>{' '}
                       for help.
                     </p>
                   </dd>
@@ -714,13 +732,14 @@ export default function IndexPage(): JSX.Element {
                   <dd className="mt-2">
                     <p className="text-base leading-6 text-gray-500 dark:text-gray-400">
                       Yes! Check out our{' '}
-                      <OutboundLink
+                      <a
                         href="https://github.com/cpinitiative/usaco-guide/?ref=home"
                         target="_blank"
+                        rel="noreferrer"
                         className="text-blue-600 dark:text-blue-400 underline"
                       >
-                        Github Repository
-                      </OutboundLink>
+                        GitHub Repository
+                      </a>
                       .
                     </p>
                   </dd>
